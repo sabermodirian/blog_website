@@ -23,3 +23,6 @@ class Post(models.Model):
     created_datetime = models.DateTimeField(auto_now_add=True)
     modified_datetime = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=10)  # استفاده از همون -->  STATUS_CHOICES
+
+    def __str__(self):
+        return f'This is 0{self.id} of {self.title} '
