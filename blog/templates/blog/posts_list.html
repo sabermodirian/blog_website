@@ -5,44 +5,252 @@
 {% endblock page_Title %}
 
 {% block content %}
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-9">
-                {% for pst in postslist %}
-                    <div class="card shadow-sm my-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ pst.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted small py-2">By:{{ pst.author }}</h6>
-                            <p class="card-text py-3">
-                                {{ pst.text }}
-                            </p>
-                            <div class="btn btn-sm btn-success">Read More</div>
-                            {#                        <a href=" {% url 'blog_detail' post.id %}" class="btn btn-sm btn-SUCCESS">#}
-                            Read More</a>
-                        </div>
+
+    <!DOCTYPE html>
+    <html lang="fa" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <title>SmartLeadAI – بازتاب گلبهی متحرک و آیکون گرافیکی</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            :root {
+                --bg-dark: #070010;
+                --txt-main: #fff;
+                --glass-blur: blur(8px);
+                --hero-gradient: linear-gradient(15deg, #00ffe1 25%, #fafa00 50%, #ff46dd 90%);
+            }
+
+            /* 🔶 انیمیشن بازتاب */
+            @keyframes sweep {
+                0% {
+                    transform: translate(-150%, -150%) rotate(25deg);
+                    opacity: 0;
+                }
+                30% {
+                    opacity: .4;
+                }
+                50% {
+                    opacity: .7;
+                }
+                100% {
+                    transform: translate(150%, 150%) rotate(25deg);
+                    opacity: 0;
+                }
+            }
+
+            body {
+                margin: 0;
+                background: radial-gradient(at 60% 30%, #1a003a 0%, #070010 70%, #000008 100%);
+                font-family: 'Vazirmatn', sans-serif;
+                color: var(--txt-main);
+                direction: rtl;
+                line-height: 1.8;
+                overflow-x: hidden;
+                user-select: none;
+            }
+
+            .container {
+                max-width: 1300px;
+                margin: auto;
+                padding: 40px 4vw;
+            }
+
+            .hero-title {
+                font-size: 2.6rem;
+                font-weight: 900;
+                text-align: center;
+                background: var(--hero-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .hero-desc {
+                text-align: center;
+                color: #cccdfd;
+                font-size: 1.15rem;
+                margin-bottom: 40px;
+            }
+
+            .cards-section {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 22px;
+            }
+
+            .value-prop-card {
+                border-radius: 22px;
+                padding: 26px 20px;
+                min-width: 250px;
+                max-width: 280px;
+                flex: 1 1 250px;
+                position: relative;
+                overflow: hidden;
+                backdrop-filter: var(--glass-blur);
+                transition: transform .25s ease, box-shadow .35s ease;
+                box-shadow: 0 6px 18px rgba(70, 0, 130, .4);
+            }
+
+            /* پس‌زمینه یکی‌درمیون */
+            .value-prop-card:nth-child(odd) {
+                background: rgba(18, 18, 40, .85);
+            }
+
+            .value-prop-card:nth-child(even) {
+                background: rgba(42, 42, 51, .85);
+            }
+
+            /* 🔶 نوار بازتاب متحرک */
+            .value-prop-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(25deg, rgba(255, 153, 102, 0) 30%, rgba(255, 204, 136, 0.7) 50%, rgba(255, 153, 102, 0) 70%);
+                opacity: 0;
+                transform: translate(-150%, -150%) rotate(25deg);
+                pointer-events: none;
+            }
+
+            .value-prop-card:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 12px 45px rgba(240, 240, 255, 0.38),
+                0 3px 10px rgba(255, 255, 255, 0.10);
+            }
+
+            .value-prop-card:hover::before {
+                animation: sweep 1.5s ease-in-out forwards; /* ⏱ افزایش زمان به 1.5 ثانیه */
+            }
+
+            /* مرزهای نئون پایین کارت */
+            .neon1 {
+                border-bottom: 4px solid #00ffe1
+            }
+
+            .neon2 {
+                border-bottom: 4px solid #fafa00
+            }
+
+            .neon3 {
+                border-bottom: 4px solid #ff46dd
+            }
+
+            .neon4 {
+                border-bottom: 4px solid #00ccff
+            }
+
+            .neon5 {
+                border-bottom: 4px solid #f5ff45
+            }
+
+            .neon6 {
+                border-bottom: 4px solid #a8ff00
+            }
+
+            .neon7 {
+                border-bottom: 4px solid #00ff9e
+            }
+
+            .neon8 {
+                border-bottom: 4px solid #3ea2ff
+            }
+
+            .neon9 {
+                border-bottom: 4px solid #fa4f8f
+            }
+
+            .neon10 {
+                border-bottom: 4px solid #ff85f7
+            }
+
+            .neon11 {
+                border-bottom: 4px solid #f8ff85
+            }
+
+            .neon12 {
+                border-bottom: 4px solid #26ffc2
+            }
+
+            .neon13 {
+                border-bottom: 4px solid #d466ff
+            }
+
+            .neon14 {
+                border-bottom: 4px solid #fbff37
+            }
+
+            .neon15 {
+                border-bottom: 4px solid #b168ff
+            }
+
+            .card-title {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                font-size: 1.08rem;
+                font-weight: 700;
+                margin-bottom: 7px;
+            }
+
+            .card-title .material-icons {
+                font-family: 'Material Icons' !important;
+                font-size: 1.5em;
+                color: #fffa70;
+                vertical-align: middle;
+            }
+
+            .card-content-fa {
+                color: #eeecff;
+                font-size: 1rem;
+                margin-bottom: 6px;
+            }
+
+            .card-content-en {
+                color: #94e6fa;
+                font-size: .94rem;
+                direction: ltr;
+                text-align: left;
+                opacity: .9;
+            }
+
+            @media (max-width: 800px) {
+                .cards-section {
+                    flex-direction: column;
+                    align-items: center
+                }
+
+                .value-prop-card {
+                    max-width: 100%
+                }
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <div class="hero-title">Django WEBLOG</div>
+        <div class="hero-desc">اWelcome to Python and Django Blog</div>
+
+        <section class="cards-section">
+
+            {% for pst in postslist %}
+                <div class="value-prop-card neon{{ pst.id }}">
+                    <div class="card-title">
+                        <span class="material-icons">{{ pst.title }}</span>By:{{ pst.author }}
                     </div>
-                    </div>
-
-                {% endfor %}
-
-            <div class="col-3">
-
-                <div class="card my-4">
-                    <h5 class="card-header">About</h5>
-                    <div class="card-body">
-
-                        <p class="card-text">We love python and django. So we created a blog site to share our
-                            thoughts</p>
-                        <a href="#"
-                           class="btn btn-sm btn-danger">
-
-                            More...
-                        </a>
-                    </div>
+                    <div class="card-content-fa">{{ pst.text }}</div>
+                    <div class="card-content-en">{{ pst.created_datetime }}</div>
                 </div>
 
-            </div>
-        </div>
+            {% endfor %}
+
+
+        </section>
     </div>
+    </body>
+    </html>
 
 {% endblock content %}
