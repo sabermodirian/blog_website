@@ -1,10 +1,9 @@
-{% for post in postslist %}
-    <h1>{{ post.title }}</h1>
-    <br>
-    <h4>{{ post.text }}</h4>
-    <br>
-    <h3>{{ post.status }}</h3>
-    <br>
-    <h2>{{ post.datetime_created }}</h2>
-    <p>____________________________</p>
-{% endfor %}
+{% extends '_base.html' %}
+
+{% block page_Title %}
+    Post List
+{% endblock page_Title %}
+
+{% block content %}
+    Hellow
+{% endblock content %}

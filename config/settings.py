@@ -53,7 +53,10 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+
+        #  علاوه بر تمپلیتهای موجود در اپ های دیگر بیا و تمپلیت قرار بده برای پروژه ی اصلی (blog_website)
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
