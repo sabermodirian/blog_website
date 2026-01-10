@@ -6,8 +6,7 @@
 
 {% block content %}
 
-    <!DOCTYPE html>
-    <html lang="fa" dir="rtl">
+
     <head>
         <meta charset="UTF-8">
         <title>SmartLeadAI – بازتاب گلبهی متحرک و آیکون گرافیکی</title>
@@ -151,7 +150,7 @@
                 border-bottom: 4px solid #a8ff00
             }
 
-            .neon7 {
+            s.neon7 {
                 border-bottom: 4px solid #00ff9e
             }
 
@@ -239,10 +238,11 @@
             {% for pst in postslist %}
                 <div class="value-prop-card neon{{ pst.id }}">
                     <div class="card-title">
-                        <span class="material-icons">{{ pst.title }}</span>By:{{ pst.author }}
+                        <div class="material-icons">{{ pst.title }} </div>
                     </div>
-                    <div class="card-content-fa">{{ pst.text }}</div>
-                    <div class="card-content-en">{{ pst.created_datetime }}</div>
+                    <div class="card-content-en">By : {{ pst.author }}</div>
+                    <div class="value-prop-card">{{ pst.text }}</div>
+                    <div class="card-content-en" , class="neon{{ pst.id }}">{{ pst.created_datetime }}</div>
                 </div>
 
             {% endfor %}
