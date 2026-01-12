@@ -18,6 +18,12 @@ class BlogPostTest(TestCase):
             author=self.user
         )
 
+        ''' : تذکر بسیار مهم
+               در نامگذاری فانکشنهای مربوطه برای هر تست حتما
+                باید عبارت test در ابتدای نام ان فانکشن
+               وجود داشته باشد و گرنه نادیده گرفته شده و اجرا نمیشود
+             '''
+
     def test_PostList_url(self):
         response = self.client.get('/blog/')
         self.assertEqual(response.status_code, 200)
@@ -25,3 +31,38 @@ class BlogPostTest(TestCase):
     def test_PostList_urlByName(self):
         response = self.client.get(reverse('posts_list'))
         self.assertEqual(response.status_code, 200)
+
+    def test_PostTitle_onBlogLstPage(self):
+        response = self.client.get(reverse('posts_list'))
+        self.assertContains(response, 'post01')
+
+    ''' : تذکر بسیار مهم
+           در نامگذاری فانکشنهای مربوطه برای هر تست حتما
+            باید عبارت _test(با حروف کوچیک) در ابتدای نام اون فانکشن
+           وجود داشته باشه و شروع بشه و گرنه نادیده گرفته شده و اجرا نمیشه
+         '''
+
+    def test_PostDtl_url(self):
+        response = self.client.get(f'/blog/{self.post_1.id}/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_PostDtl_urlByName(self):
+        response = self.client.get(reverse('post_detail', args=[self.post_1.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_PostDetails_onBlogDtlPage(self):
+        response = self.client.get(f'/blog/{self.post_1.id}/')
+        # --> معادل -->   response = self.client.get(f'/blog/1/')
+
+        self.assertContains(response, self.post_1.title)
+        self.assertContains(response, self.post_1.text)
+
+    def test_PostDetails_onBlogDtlPage_withReverse(self):
+        ''' این تابع همان تابع بالاست با استفاده ازreverse که اتفاقا بهترست و توصیه میشود '''
+        response = self.client.get(reverse('post_detail', args=[self.post_1.id]))
+        self.assertContains(response, self.post_1.title)
+        self.assertContains(response, self.post_1.text)
+
+    def test_Status_GetObj_Or404(self):
+        response = self.client.get(reverse('post_detail', args=[999]))
+        self.assertEqual(response.status_code, 404)
