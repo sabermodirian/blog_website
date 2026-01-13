@@ -9,19 +9,21 @@ from .models import Post
 
 
 class BlogPostTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='user01')
-        self.post_1 = Post.objects.create(
+    # def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(username='user01')
+        cls.post_1 = Post.objects.create(
             title='post01'
             , text='this is a text for test of post01',
             status=Post.STATUS_CHOICES[0][0],  # status='pblsh'
-            author=self.user
+            author=cls.user
         )
-        self.post_2 = Post.objects.create(
+        cls.post_2 = Post.objects.create(
             title='post02'
             , text='It,s a Lorem Ipsum test for post02',
             status=Post.STATUS_CHOICES[1][0],  # status='drft'
-            author=self.user
+            author=cls.user
         )
 
         ''' : تذکر بسیار مهم 
@@ -75,7 +77,7 @@ class BlogPostTest(TestCase):
 
     def test_DraftPostNotShow_inPostsLst(self):  # TDD Test Driven Development
         response = self.client.get(reverse('posts_list'))
-        # todo : post1 if published --> show post1 in templatePage(in postlist weblog(show postlog))
-        # todo : post2 if draft -->Not show post2 in templatePage(in postlist weblog(Not show postlog))
+        # todo: post1 if published --> show post1 in templatePage(in postlist weblog(show postlog))
+        # todo: post2 if draft -->Not show post2 in templatePage(in postlist weblog(Not show postlog))
         self.assertContains(response, self.post_1.title)
         self.assertNotContains(response, self.post_2.title)
