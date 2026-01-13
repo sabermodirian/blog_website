@@ -10,7 +10,7 @@ class Post(models.Model):
      '''
     STATUS_CHOICES = (
         # todo : این دوتاپل دریک تاپل ثابت در دیتابیس المان دوم هر تاپل  ذخیره میشود ولی در مکانهای دیگر جنگو و پروژه المان اول هر تاپل به ثبت و تعریف میرسد
-        ('publsh', 'Published'), ('drft', 'Draft')
+        ('pblsh', 'Published'), ('drft', 'Draft')
     )
     # حالا طراحی هر فیلد مدل POST
     title = models.CharField(max_length=100)

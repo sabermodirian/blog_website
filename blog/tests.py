@@ -14,11 +14,17 @@ class BlogPostTest(TestCase):
         self.post_1 = Post.objects.create(
             title='post01'
             , text='this is a text for test of post01',
-            status=Post.STATUS_CHOICES[0],
+            status=Post.STATUS_CHOICES[0][0],  # status='pblsh'
+            author=self.user
+        )
+        self.post_2 = Post.objects.create(
+            title='post02'
+            , text='It,s a Lorem Ipsum test for post02',
+            status=Post.STATUS_CHOICES[1][0],  # status='drft'
             author=self.user
         )
 
-        ''' : تذکر بسیار مهم
+        ''' : تذکر بسیار مهم 
                در نامگذاری فانکشنهای مربوطه برای هر تست حتما
                 باید عبارت test در ابتدای نام ان فانکشن
                وجود داشته باشد و گرنه نادیده گرفته شده و اجرا نمیشود
@@ -66,3 +72,10 @@ class BlogPostTest(TestCase):
     def test_Status_GetObj_Or404(self):
         response = self.client.get(reverse('post_detail', args=[999]))
         self.assertEqual(response.status_code, 404)
+
+    def test_DraftPostNotShow_inPostsLst(self):  # TDD Test Driven Development
+        response = self.client.get(reverse('posts_list'))
+        # todo : post1 if published --> show post1 in templatePage(in postlist weblog(show postlog))
+        # todo : post2 if draft -->Not show post2 in templatePage(in postlist weblog(Not show postlog))
+        self.assertContains(response, self.post_1.title)
+        self.assertNotContains(response, self.post_2.title)
