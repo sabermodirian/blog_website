@@ -6,8 +6,8 @@ from .models import Post
 
 # Create your views here.
 def post_list_view(request):
-    # posts_lst = Post.objects.all()
-    posts_lst = Post.objects.filter(status='pblsh')  # status is in **kwargs
+    posts_lst = Post.objects.all()
+    # posts_lst = Post.objects.filter(status='pblsh')  # status is in **kwargs
     # text = posts_lst.get_queryset(text)
     return render(request, 'blog/posts_list.html',
                   {'postslist': posts_lst})

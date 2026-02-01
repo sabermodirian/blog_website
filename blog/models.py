@@ -16,6 +16,11 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
 
+    def short_text(self):
+        if len(self.text) > 100:
+            return self.text[:100] + '...'
+        return self.text
+
     # auth  app(built-in Django)--> User((built-in Django) table(or model) of auth app)
     author = models.ForeignKey('auth.User',
                                on_delete=models.CASCADE)  # این جدول(مدل)User از قبل در اپ aurh که هردو توسط خود جنگو تولید شده اند موجودند

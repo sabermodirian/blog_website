@@ -16,7 +16,7 @@
         <style>
             :root {
                 --bg-dark: #070010;
-                --txt-main: #fff;
+                --txt-main: #ca9a9a;
                 --glass-blur: blur(8px);
                 --hero-gradient: linear-gradient(15deg, #00ffe1 25%, #fafa00 50%, #ff46dd 90%);
             }
@@ -67,7 +67,7 @@
 
             .hero-desc {
                 text-align: center;
-                color: #cccdfd;
+                color: #ca9a9a;
                 font-size: 1.15rem;
                 margin-bottom: 40px;
             }
@@ -109,10 +109,14 @@
                 left: 0;
                 width: 200%;
                 height: 200%;
-                background: linear-gradient(25deg, rgba(255, 153, 102, 0) 30%, rgba(255, 204, 136, 0.7) 50%, rgba(255, 153, 102, 0) 70%);
+                background: linear-gradient(25deg, rgb(202, 154, 154) 30%, rgba(255, 204, 136, 0.7) 50%, rgba(255, 153, 102, 0) 70%);
                 opacity: 0;
                 transform: translate(-150%, -150%) rotate(25deg);
                 pointer-events: none;
+            }
+
+            .value-prop-card.neon2 .card-content-en {
+                color: #CA9A9AFF; /* نارنجی-گلبهی */
             }
 
             .value-prop-card:hover {
@@ -203,13 +207,15 @@
             }
 
             .card-content-fa {
-                color: #eeecff;
+                color: #ca9a9a;
                 font-size: 1rem;
                 margin-bottom: 6px;
             }
 
             .card-content-en {
-                color: #94e6fa;
+                color: #ff46dd; /* نارنجی-گلبهی */
+                transition: color 0.3s ease;
+
                 font-size: .94rem;
                 direction: ltr;
                 text-align: left;
@@ -222,8 +228,11 @@
                     align-items: center
                 }
 
-                .value-prop-card {
-                    max-width: 100%
+
+                /* وقتی کارت فعال شد (کلیک شد) */
+                .value-prop-card:active .card-content-en,
+                .value-prop-card:focus .card-content-en {
+                    color: #c6a565; /* رنگ بژ */
                 }
             }
         </style>
@@ -236,13 +245,14 @@
         <section class="cards-section">
 
             {% for pst in postslist %}
-                <div class="value-prop-card neon{{ pst.id }}">
+                <div class="value-prop-card neon{{ pst.id }}" data-active="false">
+
                     <div class="card-title">
                         <div class="material-icons">{{ pst.title }} </div>
                     </div>
                     <div class="card-content-en">By : {{ pst.author }}</div>
                     <a href="{% url 'post_detail' pst.id %}" class="btn btn-sm btn-warning">
-                        <div class="value-prop-card">{{ pst.text }}</div>
+                        <div class="value-prop-card">{{ pst.short_text }}</div>
                     </a>
 
                     <div class="card-content-en" , class="neon{{ pst.id }}">{{ pst.created_datetime }}</div>
@@ -253,7 +263,20 @@
 
         </section>
     </div>
+
+    <script>
+        document.querySelectorAll('.value-prop-card.neon2').forEach(card => {
+            card.addEventListener('click', function () {
+                this.querySelector('.card-content-en').style.color = '#c6a565'; // رنگ بژ
+            });
+        });
+
+
+    </script>
     </body>
+    <script>
+
+
     </html>
 
 {% endblock content %}
