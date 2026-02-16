@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 
@@ -28,4 +29,10 @@ def post_create_view(request):
         print(f'This is a POST  request method: {request.POST}')
         print(f'This is Title of a POST  request method :{request.POST.get('title')}')
         print(f'This is Text of a POST  request method :{request.POST.get('text')}')
+        pst_ttl = request.POST.get('title')
+        pst_txt = request.POST.get('text')
+        user = User.objects.all()[0]
+        Post.objects.create(  # Django ORM:ایجاد یک شئ در orm باعث ساخت یک ردیف(سطر) در جدول پستها میشود توسط این create
+            title=pst_ttl, text=pst_txt, author=user, status='pblsh'
+        )
     return render(request, 'blog/post_create.html')
