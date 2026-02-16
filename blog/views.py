@@ -19,3 +19,6 @@ def post_detail_view(request, pk):
     # return HttpResponse(f'ID:{pk}')
     return render(request, 'blog/post_detail.html', {'pst': post_log})
 
+
+def post_create_view(request):
+    return render(request, 'blog/post_create.html')
