@@ -14,9 +14,10 @@
             <h3>Add new Post:</h3>
             <form method="POST">
                 {% csrf_token %}
-                {#{{ N_P_Frm.as_p}}#}
+                {# {{ N_P_Frm.as_p}} #}
                 <table>
                     {{ N_P_Frm.as_table }}
+                    {{ U_D_frm.as_table }}
                 </table>
 
                 {#                <div class="form-group py-2">#}

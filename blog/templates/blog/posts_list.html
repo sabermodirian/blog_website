@@ -251,7 +251,7 @@
                         <div class="material-icons">{{ pst.title }} </div>
                     </div>
                     <div class="card-content-en">By : {{ pst.author }}</div>
-                    <a href="{% url 'post_detail' pst.id %}" class="btn btn-sm btn-warning">
+                    <a href="{% url 'blog:post_detail' pst.id %}" class="btn btn-sm btn-warning">
                         <div class="value-prop-card">{{ pst.short_text }}</div>
                     </a>
 
