@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 
+from .forms import NewPostForm
 from .models import Post
 
 
@@ -20,19 +20,26 @@ def post_detail_view(request, pk):
     # return HttpResponse(f'ID:{pk}')
     return render(request, 'blog/post_detail.html', {'pst': post_log})
 
-
 def post_create_view(request):
-    if request.method == "GET":
-        print('This is a GET  request method')
-    elif request.method == "POST":
-        # form data
-        print(f'This is a POST  request method: {request.POST}')
-        print(f'This is Title of a POST  request method :{request.POST.get('title')}')
-        print(f'This is Text of a POST  request method :{request.POST.get('text')}')
-        pst_ttl = request.POST.get('title')
-        pst_txt = request.POST.get('text')
-        user = User.objects.all()[0]
-        Post.objects.create(  # Django ORM:ایجاد یک شئ در orm باعث ساخت یک ردیف(سطر) در جدول پستها میشود توسط این create
-            title=pst_ttl, text=pst_txt, author=user, status='pblsh'
-        )
-    return render(request, 'blog/post_create.html')
+    if request.method == 'POST':
+        pass
+    else:  # Get request
+        frm = NewPostForm()
+
+    return render(request, 'blog/post_create.html', context={'N_P_Frm': frm})
+
+# def post_create_view(request):
+#     if request.method == "GET":
+#         print('This is a GET  request method')
+#     elif request.method == "POST":
+#         # form data
+#         print(f'This is a POST  request method: {request.POST}')
+#         print(f'This is Title of a POST  request method :{request.POST.get('title')}')
+#         print(f'This is Text of a POST  request method :{request.POST.get('text')}')
+#         pst_ttl = request.POST.get('title')
+#         pst_txt = request.POST.get('text')
+#         user = User.objects.all()[0]
+#         Post.objects.create(  # Django ORM:ایجاد یک شئ در orm باعث ساخت یک ردیف(سطر) در جدول پستها میشود توسط این create
+#             title=pst_ttl, text=pst_txt, author=user, status='pblsh'
+#         )
+#     return render(request, 'blog/post_create.html')
