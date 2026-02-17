@@ -22,7 +22,11 @@ def post_detail_view(request, pk):
 
 def post_create_view(request):
     if request.method == 'POST':
-        pass
+        frm = NewPostForm(request.POST)
+        if frm.is_valid():
+            frm.save()
+            frm = NewPostForm()
+
     else:  # Get request
         frm = NewPostForm()
 
