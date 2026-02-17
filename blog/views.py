@@ -1,5 +1,4 @@
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import NewPostForm
 from .models import Post
@@ -25,8 +24,8 @@ def post_create_view(request):
         frm = NewPostForm(request.POST)
         if frm.is_valid():
             frm.save()
-            frm = NewPostForm()
-
+            # frm = NewPostForm()
+            return redirect('posts_list')
     else:  # Get request
         frm = NewPostForm()
 
