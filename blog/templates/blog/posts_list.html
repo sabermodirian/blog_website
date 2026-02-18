@@ -267,7 +267,7 @@
                         <div class="value-prop-card">{{ pst.short_text }}</div>
                     </a>
                     <a href="{% url 'blog:post_update' pst.id %}" class="btn btn-sm btn-warning">ویرایش</a>
-
+                    <a href="{% url 'blog:post_delete' pst.id %}" class="btn btn-sm btn-danger">حذف پستلاگ</a>
                     <div class="card-content-en" , class="neon{{ pst.id }}">{{ pst.created_datetime }}</div>
                 </div>
 

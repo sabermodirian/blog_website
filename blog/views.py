@@ -75,3 +75,12 @@ def post_update_view(request, pk):
 
     # 4. حالا فرم رو می‌فرستیم به تمپلیت
     return render(request, 'blog/post_create.html', context={'U_D_frm': frm})
+
+
+def post_delete_view(request, pk):
+    pst = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        pst.delete()
+        return redirect('blog:posts_list')
+
+    return render(request, 'blog/post_delete.html', context={'D_pst': pst})

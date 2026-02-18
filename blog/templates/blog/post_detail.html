@@ -14,6 +14,11 @@
                 <p class="mt-2">{{ pst.text }}</p>
             </div>
 
+            <div class="container">
+                <a href="{% url 'blog:post_update' pst.id %}" class="btn btn-sm btn-warning">ویرایش</a>
+                <a href="{% url 'blog:post_delete' pst.id %}" class="btn btn-sm btn-danger">حذف پستلاگ</a>
+            </div>
+
             <div class="card shadow my-3 p-5">
                 <h3>Comments:</h3>
                 No comments yet! Be the first one.
