@@ -6,8 +6,8 @@ from .models import Post
 
 # Create your views here.
 def post_list_view(request):
-    posts_lst = Post.objects.all()
-    # posts_lst = Post.objects.filter(status='pblsh')  # status is in **kwargs
+    # posts_lst = Post.objects.all()
+    posts_lst = Post.objects.filter(status='pblsh').order_by('-modified_datetime')  # status is in **kwargs
     # text = posts_lst.get_queryset(text)
     return render(request, 'blog/posts_list.html',
                   {'postslist': posts_lst})
@@ -57,7 +57,11 @@ def post_update_view(request, pk):
         # اگه دکمه سابمیت زده شده، اطلاعات جدید رو می‌ریزیم تو فرم
         # نکته حیاتی: instance=pst یعنی داریم همین پست رو آپدیت می‌کنیم نه یکی جدید!
         frm = NewPostForm(request.POST, instance=pst)
+        # خط بالا را صورتیکه این خط شامل if request.method == 'POST':
+        # وجود نداشت باید بصورت زیر با عبارت or None مینوشتیم
+        # frm = NewPostForm(request.POST  or None, instance=pst)
 
+        #باید هر وقت یک فرمی را پر میکنیم و میخاهیم آنرا ارسال نماییم حتما صحت (valid بودن)اطاعات آن را چک کنیم
         if frm.is_valid():
             frm.save()
             # بعد از ذخیره، ریدارکت کن به صفحه جزئیات یا لیست (هر جا دوست داری)

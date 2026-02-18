@@ -199,9 +199,9 @@
                 margin-bottom: 7px;
             }
 
-            .card-title .material-icons {
-                font-family: 'Material Icons' !important;
-                font-size: 1.5em;
+            .card-title {
+                font-family: Andalus;
+                font-size: 1.2em;
                 color: #fffa70;
                 vertical-align: middle;
             }
@@ -213,10 +213,20 @@
             }
 
             .card-content-en {
-                color: #ff46dd; /* نارنجی-گلبهی */
+                color: #ff46dd;
                 transition: color 0.3s ease;
 
                 font-size: .94rem;
+                direction: ltr;
+                text-align: left;
+                opacity: .9;
+            }
+
+            .card-content2-en {
+                color: rgba(33, 238, 204, 0.92);
+                transition: color 0.3s ease;
+
+                font-size: 1.1rem;
                 direction: ltr;
                 text-align: left;
                 opacity: .9;
@@ -248,12 +258,15 @@
                 <div class="value-prop-card neon{{ pst.id }}" data-active="false">
 
                     <div class="card-title">
-                        <div class="material-icons">{{ pst.title }} </div>
+                        <div class="card-title">{{ pst.title }} </div>
                     </div>
-                    <div class="card-content-en">By : {{ pst.author }}</div>
-                    <a href="{% url 'blog:post_detail' pst.id %}" class="btn btn-sm btn-warning">
+                    <div class="card-content2-en">By : {{ pst.author }}</div>
+
+                    <a href="{% url 'blog:post_detail' pst.id %}" class="card-content-fa">
+
                         <div class="value-prop-card">{{ pst.short_text }}</div>
                     </a>
+                    <a href="{% url 'blog:post_update' pst.id %}" class="btn btn-sm btn-warning">ویرایش</a>
 
                     <div class="card-content-en" , class="neon{{ pst.id }}">{{ pst.created_datetime }}</div>
                 </div>
