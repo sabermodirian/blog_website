@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 
 
 # Create your models here.
@@ -31,3 +32,7 @@ class Post(models.Model):
 
     def __str__(self):
         return f'This is 0{self.id} of {self.title} '
+
+    def get_absolute_url(self):
+        # 👇👇👇 اون blog: رو حتماً باید اولش بذاری 👇👇👇
+        return reverse_lazy('blog:post_detail', args=[self.id])

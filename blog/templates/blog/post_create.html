@@ -16,8 +16,12 @@
                 {% csrf_token %}
                 {# {{ N_P_Frm.as_p}} #}
                 <table>
+                    {#  درحالت FBV #برای و مخصوص  Post_Create_View#}
                     {{ N_P_Frm.as_table }}
                     {{ U_D_frm.as_table }}
+
+                    {#   {{ form.as_table }}  #برای و مخصوص  PostCreateCBS_View#}
+                    {{ form.as_table }}
                 </table>
 
                 {#                <div class="form-group py-2">#}
