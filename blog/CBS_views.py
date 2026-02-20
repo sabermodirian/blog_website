@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.views import generic  # کتابخونه ی مخصوص Class Base View ها جنریک هستش
 
 from .forms import NewPostForm
@@ -34,3 +35,9 @@ class PostUpdateCBS_View(generic.UpdateView):
     form_class = NewPostForm
     template_name = 'blog/post_create.html'
     model = Post
+
+
+class PostDeleteCBS_View(generic.DeleteView):
+    model = Post
+    template_name = 'blog/post_delete.html'
+    success_url = reverse_lazy('blog:posts_list')
