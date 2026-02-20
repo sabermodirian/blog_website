@@ -25,4 +25,12 @@ class PostCreateCBS_View(generic.CreateView):
     # 👇 اینجا رو ببین! آدرس خونه‌ی جدید رو بهش دادیم!
     template_name = 'blog/post_create.html'
     # # 👇 یه چیز باحال دیگه هم بهش اضافه کنیم که بعد از ساخت پست، برگرده به لیست
-    # success_url = reverse_lazy('blog:posts_list')
+    # success_url = reverse_lazy('blog:posts_list') # در مدل blog به شکل get_absolute_url بتری پیاده سازی شده است
+
+    # 👇👇👇 اصلاح شد: اومد اول خط (هم‌تراز با بقیه) 👇👇👇
+
+
+class PostUpdateCBS_View(generic.UpdateView):
+    form_class = NewPostForm
+    template_name = 'blog/post_create.html'
+    model = Post
