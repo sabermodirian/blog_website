@@ -23,7 +23,23 @@
                 <a class="nav-link" href="{% url 'blog:post_create' %}">Create New Post</a>
             </div>
         </div>
-        <div class="mx-2 text-white">Welcome</div>
+        <div class="mx-2 text-white">
+            {% if user.is_authenticated %}
+
+                <p>Welcome {{ user.username }}</p>
+                <!-- ✅ راه‌حل اصولی و امن برای جنگو ۵ به بعد -->
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">
+                        خروج از حساب
+                    </button>
+                </form>
+
+            {% else %}
+                <a href=" {% url 'login' %}  ">Log In</a>
+            {% endif %}
+
+        </div>
     </div>
 </nav>
 
