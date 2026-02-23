@@ -36,7 +36,8 @@
                 </form>
 
             {% else %}
-                <a href="{% url 'login' %}" class="btn btn-warning">Log In</a>
+                <a href="{% url 'login' %}" class="btn btn-warning">Log In</a> |
+                <a href="{% url 'signup' %}" class="btn btn-warning">Sign Up</a>
             {% endif %}
 
         </div>
