@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<a href="{% url 'login' %}">login again</a>
+<!-- post_detail.html -->
+{% extends '_base.html' %}
 
-</body>
-</html>
+{% block page_title %}
+    Login
+{% endblock page_title %}
+
+{% block content %}
+    <div class="container mt-3">
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success" type="submit">Log In Again</button>
+
+        </form>
+    </div>
+{% endblock content %}
