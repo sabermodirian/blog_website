@@ -4830,3 +4830,8 @@
 /blogvenv/Scripts/pythonw.exe
 /blogvenv/Scripts/sqlformat.exe
 /blogvenv/pyvenv.cfg
+*.sqlite3
+.idea/
+/blogvenv/
+__pycache__/
+
