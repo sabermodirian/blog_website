@@ -1,0 +1,11 @@
+# Normalize text files in repository
+* text=auto
+
+# Render/Linux shell scripts must always use LF
+*.sh text eol=lf
+Procfile text eol=lf
+
+# Recommended normalization for project configuration files
+*.py text eol=lf
+*.txt text eol=lf
+.gitignore text eol=lf
