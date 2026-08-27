@@ -9,22 +9,47 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-from multiprocessing.connection import default_family
+import dj_database_url
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dotenv import load_dotenv
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# بارگذاری متغیرهای محیطی از فایل .env
+# Load environment variables from the .env file
+load_dotenv(BASE_DIR / ".env")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oxl6w(k4+rwjsaenw5$5g$#+ro^5j8qlnb(9gx-u6pe=2n4)*j'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-ALLOWED_HOSTS = ['*']
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY environment variable is required.")
+
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+
+
+# ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = [
+host.strip()
+for host in os.environ.get(
+"ALLOWED_HOSTS",
+"127.0.0.1,localhost",
+).split(",")
+if host.strip()
+]
+
+CSRF_TRUSTED_ORIGINS = [
+origin.strip()
+for origin in os.environ.get(
+"CSRF_TRUSTED_ORIGINS",
+"",
+).split(",")
+if origin.strip()
+]
 
 
 # Application definition
@@ -44,6 +69,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,11 +104,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+"default": dj_database_url.config(
+default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+conn_max_age=600,
+conn_health_checks=True,
+ssl_require=not DEBUG,
+)
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -116,18 +145,41 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
+"default": {
+"BACKEND": "django.core.files.storage.FileSystemStorage",
+},
+"staticfiles": {
+"BACKEND": (
+"whitenoise.storage.CompressedManifestStaticFilesStorage"
+),
+},
 }
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+LOGIN_REDIRECT_URL = "blog:posts_list"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = 'blog:posts_list'
+if not DEBUG:
+    # اعلام HTTPS اصلی به Django وقتی پشت Proxy مثل Render هستیم
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # ارسال کوکی‌ها فقط روی HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # اجبار تمام درخواست‌ها به HTTPS
+    SECURE_SSL_REDIRECT = True
+
+    # HSTS: اجبار مرورگر به استفاده از HTTPS برای یک سال
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+
+
+
