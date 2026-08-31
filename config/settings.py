@@ -103,14 +103,30 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# import os
+# import dj_database_url
+# فرض می‌کنیم BASE_DIR و DEBUG قبلاً در بالای تنظیمات تعریف شده‌اند:
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+# 🚨 یک لایه امنیتی مهندسی‌شده برای جلوگیری از خطای خاموش در سرور واقعی:
+if not DEBUG and not DATABASE_URL:
+    raise RuntimeError(
+        "❌ خطا: متغیر DATABASE_URL در محیط Production تعریف نشده است!"
+    )
+
+# تنظیم نهایی و پایدار دیتابیس 🚀
 DATABASES = {
-"default": dj_database_url.config(
-default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-conn_max_age=600,
-conn_health_checks=True,
-ssl_require=not DEBUG,
-)
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=not DEBUG,
+    )
 }
+
 
 
 # Password validation
