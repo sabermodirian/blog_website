@@ -28,7 +28,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY environment variable is required.")
 
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+
+# DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+# کار می‌کنه، ولی اگه روی سرور یا توی .env کسی بنویسه DEBUG=1، متاسفانه DEBUG تبدیل به False میشه!
+DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 
 
 # ALLOWED_HOSTS = ['*']
@@ -62,14 +65,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # اپ‌های اختصاصی پروژه من / Local Apps
     'blog',
     'accounts',
 ]
 
+# میدل‌ورها (WhiteNoise دقیقاً زیر SecurityMiddleware قرار می‌گیرد)
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # سرو فایل‌های استاتیک در پروداکشن
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,6 +82,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -85,7 +90,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
         #  علاوه بر تمپلیتهای موجود در اپ های دیگر بیا و تمپلیت قرار بده برای پروژه ی اصلی (blog_website)
-        'DIRS': [str(BASE_DIR.joinpath('templates'))],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))], # مسیر پوشه قالب‌های ریشه
 
         'APP_DIRS': True,
         'OPTIONS': {
@@ -131,6 +136,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+# اعتبارسنجی رمز عبور / Password Validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -150,12 +156,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+# زبان و منطقه زمانی / Internationalization & Localization
+LANGUAGE_CODE = 'fa-ir'  # یا 'en-us' بسته به نیاز وبلاگت
+TIME_ZONE = 'Asia/Tehran'  # یا 'UTC'
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -163,6 +167,29 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# مسیر پوشه استاتیک برای فایل‌های عمومی پروژه
+# Static files directory for global app assets
+# فایل‌های استاتیک / Static Files (CSS, JS, Images)
+STATIC_DIR = BASE_DIR / "static"
+STATICFILES_DIRS = [STATIC_DIR] if STATIC_DIR.is_dir() else []
+
+
+# تنظیمات آپلود فایل‌های کاربر (تصاویر، مستندات)
+# Media files configuration (user uploads)
+# فایل‌های رسانه‌ای / Media Files (Uploads)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# مسیرهای احراز هویت / Auth Redirection URLs
+
+LOGIN_URL = "accounts:login" # وقتی کاربر لاگین نکرده و به صفحه محافظت‌شده می‌ره
+LOGIN_REDIRECT_URL = "blog:posts_list"
+LOGOUT_REDIRECT_URL = "blog:posts_list" # بعد از خروج کجا بره؟
+
+
+# مدل کاربر اختصاصی (در صورت نیاز آن‌کامنت شود)
+# AUTH_USER_MODEL = "accounts.CustomUser"
 
 STORAGES = {
 "default": {
@@ -178,9 +205,9 @@ STORAGES = {
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-LOGIN_REDIRECT_URL = "blog:posts_list"
 
-if not DEBUG:
+if not DEBUG:# سخت‌گیری‌های امنیتی در حالت Production / Security Hardening
+    # هدر تشخیص HTTPS در سرورهای پشت پروکسی (مانند Render, Nginx, Cloudflare)
     # اعلام HTTPS اصلی به Django وقتی پشت Proxy مثل Render هستیم
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 

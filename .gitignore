@@ -33,6 +33,9 @@ settings_local.py
 # =========================
 # Django generated files
 # =========================
+# فایل‌های استاتیک جمع‌آوری‌شده و مدیا
+
+.DS_Store
 media/
 staticfiles/
 
