@@ -48,7 +48,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     # اگر فایل‌های استاتیک در پوشه static پروژه تعریف شده‌اند و نیاز به سرو دارند:
     # If static files are defined in the project's static folder and need serving:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # 🎨 شخصی‌سازی ظاهر پنل ادمین (اختیاری ولی فوق‌العاده شیک)
 # Customizing the Django Admin interface appearance (optional but highly recommended)

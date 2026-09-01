@@ -12,9 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import dj_database_url
 import os
 from pathlib import Path
-
 from dotenv import load_dotenv
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,17 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables from the .env file
 load_dotenv(BASE_DIR / ".env")
 
-
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY environment variable is required.")
-
 
 # DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 # کار می‌کنه، ولی اگه روی سرور یا توی .env کسی بنویسه DEBUG=1، متاسفانه DEBUG تبدیل به False میشه!
 DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
-
 
 # ALLOWED_HOSTS = ['*']
 
@@ -45,18 +39,21 @@ for host in os.environ.get(
 if host.strip()
 ]
 
+# بارگذاری دامنه‌های مجاز CSRF
+csrf_raw = os.environ.get("CSRF_TRUSTED_ORIGINS", "")
 CSRF_TRUSTED_ORIGINS = [
-origin.strip()
-for origin in os.environ.get(
-"CSRF_TRUSTED_ORIGINS",
-"",
-).split(",")
-if origin.strip()
+    origin.strip()
+    for origin in csrf_raw.split(",")
+    if origin.strip()
 ]
-
+# CSRF_TRUSTED_ORIGINS = [
+#     origin.strip() for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()
+# ]
+# OR
+# csrf_raw = os.environ.get("CSRF_TRUSTED_ORIGINS", "")
+# CSRF_TRUSTED_ORIGINS = [url.strip() for url in csrf_raw.split(",") if url.strip()]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -82,7 +79,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -107,13 +103,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 # import os
 # import dj_database_url
 # فرض می‌کنیم BASE_DIR و DEBUG قبلاً در بالای تنظیمات تعریف شده‌اند:
 # BASE_DIR = Path(__file__).resolve().parent.parent
 # DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # 🚨 یک لایه امنیتی مهندسی‌شده برای جلوگیری از خطای خاموش در سرور واقعی:
@@ -121,7 +115,6 @@ if not DEBUG and not DATABASE_URL:
     raise RuntimeError(
         "❌ خطا: متغیر DATABASE_URL در محیط Production تعریف نشده است!"
     )
-
 # تنظیم نهایی و پایدار دیتابیس 🚀
 DATABASES = {
     "default": dj_database_url.config(
@@ -132,12 +125,9 @@ DATABASES = {
     )
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 # اعتبارسنجی رمز عبور / Password Validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -153,9 +143,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 # زبان و منطقه زمانی / Internationalization & Localization
 LANGUAGE_CODE = 'fa-ir'  # یا 'en-us' بسته به نیاز وبلاگت
 TIME_ZONE = 'Asia/Tehran'  # یا 'UTC'
@@ -174,15 +163,15 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_DIR = BASE_DIR / "static"
 STATICFILES_DIRS = [STATIC_DIR] if STATIC_DIR.is_dir() else []
 
-
 # تنظیمات آپلود فایل‌های کاربر (تصاویر، مستندات)
 # Media files configuration (user uploads)
 # فایل‌های رسانه‌ای / Media Files (Uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# مسیرهای احراز هویت / Auth Redirection URLs
 
+
+# مسیرهای احراز هویت / Auth Redirection URLs
 LOGIN_URL = "accounts:login" # وقتی کاربر لاگین نکرده و به صفحه محافظت‌شده می‌ره
 LOGIN_REDIRECT_URL = "blog:posts_list"
 LOGOUT_REDIRECT_URL = "blog:posts_list" # بعد از خروج کجا بره؟
